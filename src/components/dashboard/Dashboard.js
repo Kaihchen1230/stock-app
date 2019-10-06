@@ -2,21 +2,70 @@ import React from 'react';
 import * as mutations from '../../graphql/mutations'
 import * as queries from '../../graphql/queries';
 import Amplify, {Auth, API, graphqlOperation } from 'aws-amplify';
+import { async } from 'q';
 
 class Dashboard extends React.Component{
 
     constructor(props){
         super(props);
-
+        
         this.state = {
-            data: 0
+            currentUser: {},
+            currentUserExisted: false
+        }
+    }
+
+    createUser = async () => {
+        try{
+            const { email, sub } = this.state.currentUser.attributes;
+            const payload = {
+                id: sub,
+                email: email,
+                username: this.state.currentUser.username,
+                balance: 5000
+            }
+    
+            const { data } = await API.graphql(graphqlOperation(mutations.createUser, {input: payload}));
+
+            console.log('this is data from mutations: ', data)
+
+        }catch(error){
+            console.log('there is an error to create the user: ', error)
+        }
+    }
+
+    checkUserExisted =  async () => {
+        
+        try{
+            // console.log('this is the state in the checkuser: ', this.state)
+            const id = this.state.currentUser.attributes.sub;
+            const { data } = await API.graphql(graphqlOperation(queries.getUser, {id: id}));
+            console.log('this is the data from query: ',data.getUser)
+
+            // user not existed, so create user into the user table
+            if(!data.getUser){
+                this.createUser();
+            }else{
+                console.log(data.getUser.username, ' already existed');
+            }
+        }catch(error){
+            console.log('there is error to fetch user data: ', error);
         }
     }
 
     componentDidMount = async () => {
         
         Auth.currentAuthenticatedUser()
-        .then(user => console.log(user.attributes))
+        .then(user => {
+            console.log('this is user: ', user)
+            this.setState({
+                currentUser: user
+            })
+        }).then(async () => {  
+            this.checkUserExisted();
+        })
+
+        
 
         try{
             // const payload = {
