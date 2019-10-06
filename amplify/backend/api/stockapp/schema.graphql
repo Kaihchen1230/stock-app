@@ -1,0 +1,24 @@
+type User @model{
+  id: ID!
+  username: String,
+  email: String,
+  balance: Float,
+  stocks: [Stock]@connection # each user can own more than one stocks
+  transctions: [Transaction]@connection # each user can have more than one transctions
+}
+
+type Stock @model @auth(rules: [{allow: owner}]){
+  id: ID!
+  symbol: String!
+  shareAmount: Int
+  name: String
+  price: Float
+  priceOpen: Float
+  dayHigh: Float
+  dayLow: Float
+}
+
+type Transaction @model @auth(rules: [{allow: owner}]){
+  id: ID!
+  stockName: Stock @connection # each transaction contains one stock information
+}
