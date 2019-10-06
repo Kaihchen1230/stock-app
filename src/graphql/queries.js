@@ -11,6 +11,7 @@ export const getUser = `query GetUser($id: ID!) {
       items {
         id
         symbol
+        amount
         shareAmount
         name
         price
@@ -57,6 +58,7 @@ export const getStock = `query GetStock($id: ID!) {
   getStock(id: $id) {
     id
     symbol
+    amount
     shareAmount
     name
     price
@@ -76,6 +78,7 @@ export const listStocks = `query ListStocks(
     items {
       id
       symbol
+      amount
       shareAmount
       name
       price
@@ -94,6 +97,7 @@ export const getTransaction = `query GetTransaction($id: ID!) {
     stockName {
       id
       symbol
+      amount
       shareAmount
       name
       price
@@ -117,6 +121,7 @@ export const listTransactions = `query ListTransactions(
       stockName {
         id
         symbol
+        amount
         shareAmount
         name
         price

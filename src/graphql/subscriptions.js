@@ -11,6 +11,7 @@ export const onCreateUser = `subscription OnCreateUser {
       items {
         id
         symbol
+        amount
         shareAmount
         name
         price
@@ -41,6 +42,7 @@ export const onUpdateUser = `subscription OnUpdateUser {
       items {
         id
         symbol
+        amount
         shareAmount
         name
         price
@@ -71,6 +73,7 @@ export const onDeleteUser = `subscription OnDeleteUser {
       items {
         id
         symbol
+        amount
         shareAmount
         name
         price
@@ -95,6 +98,7 @@ export const onCreateStock = `subscription OnCreateStock($owner: String!) {
   onCreateStock(owner: $owner) {
     id
     symbol
+    amount
     shareAmount
     name
     price
@@ -109,6 +113,7 @@ export const onUpdateStock = `subscription OnUpdateStock($owner: String!) {
   onUpdateStock(owner: $owner) {
     id
     symbol
+    amount
     shareAmount
     name
     price
@@ -123,6 +128,7 @@ export const onDeleteStock = `subscription OnDeleteStock($owner: String!) {
   onDeleteStock(owner: $owner) {
     id
     symbol
+    amount
     shareAmount
     name
     price
@@ -139,6 +145,7 @@ export const onCreateTransaction = `subscription OnCreateTransaction($owner: Str
     stockName {
       id
       symbol
+      amount
       shareAmount
       name
       price
@@ -157,6 +164,7 @@ export const onUpdateTransaction = `subscription OnUpdateTransaction($owner: Str
     stockName {
       id
       symbol
+      amount
       shareAmount
       name
       price
@@ -175,6 +183,7 @@ export const onDeleteTransaction = `subscription OnDeleteTransaction($owner: Str
     stockName {
       id
       symbol
+      amount
       shareAmount
       name
       price

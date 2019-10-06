@@ -11,6 +11,7 @@ export const createUser = `mutation CreateUser($input: CreateUserInput!) {
       items {
         id
         symbol
+        amount
         shareAmount
         name
         price
@@ -41,6 +42,7 @@ export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
       items {
         id
         symbol
+        amount
         shareAmount
         name
         price
@@ -71,6 +73,7 @@ export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
       items {
         id
         symbol
+        amount
         shareAmount
         name
         price
@@ -95,6 +98,7 @@ export const createStock = `mutation CreateStock($input: CreateStockInput!) {
   createStock(input: $input) {
     id
     symbol
+    amount
     shareAmount
     name
     price
@@ -109,6 +113,7 @@ export const updateStock = `mutation UpdateStock($input: UpdateStockInput!) {
   updateStock(input: $input) {
     id
     symbol
+    amount
     shareAmount
     name
     price
@@ -123,6 +128,7 @@ export const deleteStock = `mutation DeleteStock($input: DeleteStockInput!) {
   deleteStock(input: $input) {
     id
     symbol
+    amount
     shareAmount
     name
     price
@@ -139,6 +145,7 @@ export const createTransaction = `mutation CreateTransaction($input: CreateTrans
     stockName {
       id
       symbol
+      amount
       shareAmount
       name
       price
@@ -157,6 +164,7 @@ export const updateTransaction = `mutation UpdateTransaction($input: UpdateTrans
     stockName {
       id
       symbol
+      amount
       shareAmount
       name
       price
@@ -175,6 +183,7 @@ export const deleteTransaction = `mutation DeleteTransaction($input: DeleteTrans
     stockName {
       id
       symbol
+      amount
       shareAmount
       name
       price
