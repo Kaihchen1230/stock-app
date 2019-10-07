@@ -10,10 +10,8 @@ type User @model{
 type Stock @model @auth(rules: [{allow: owner}]){
   id: ID!
   symbol: String
-  amount: Int
   shareAmount: Int
   name: String
-  price: Float
   priceOpen: Float
   dayHigh: Float
   dayLow: Float

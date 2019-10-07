@@ -2,8 +2,10 @@ import React from 'react';
 import * as mutations from '../../graphql/mutations'
 import * as queries from '../../graphql/queries';
 import Amplify, {Auth, API, graphqlOperation } from 'aws-amplify';
+import axios from 'axios';
 import { withStyles } from '@material-ui/core/styles';
 import {TextField, Grid, Button} from '@material-ui/core';
+import { async } from 'q';
 
 
 const dashBoardStyle = () => ({
@@ -27,14 +29,18 @@ class Dashboard extends React.Component{
         super(props);
         
         this.state = {
+            API_KEY: process.env.REACT_APP_STOCK_API_KEY,
             currentUser: {},
             tickerSymbol: '',
-            quantity: 0
+            share: 0,
+            stockInfo: {},
+            validStock: true
         }
     }
 
     createUser = async () => {
         try{
+            
             const { email, sub } = this.state.currentUser.attributes;
             const payload = {
                 id: sub,
@@ -94,23 +100,41 @@ class Dashboard extends React.Component{
         })
     }
 
-    hndleQuantityChange = (event) => {
+    handleShareChange = (event) => {
         event.preventDefault();
 
-        const quantity = event.target.value;
-        console.log('this is quantity: ', quantity);
+        const share = event.target.value;
+        console.log('this is quantity: ', share);
 
         this.setState({
-            quantity: quantity
+            share: share
         })
 
+    }
+
+    buyStack = async () => {
+        console.log('this is the stock info: ', this.state.stockInfo)
+        // const {data} = await API.graphql(graphqlOperation(mutations.createStock, {}))
     }
 
     handleSubmit = async event => {
         event.preventDefault();
         
-        let quantityInput = document.querySelector('#purchase-form');
-        quantityInput.reset();
+        let form = document.querySelector('#purchase-form');
+        form.reset();
+
+        axios.get(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${this.state.tickerSymbol}&apikey=${this.state.API_KEY}`)
+            .then(res => {
+                const stockInfo = res.data;
+                console.log('this is the stockInfo: ', stockInfo)
+                this.setState({
+                    stockInfo: stockInfo
+                }, ()=> console.log('this is stockInfo: ', this.state.stockInfo))
+                if(!stockInfo.hasOwnProperty('Error Message')){
+                    this.buyStack();
+                }
+            })
+        
     }
 
     render(){
@@ -132,10 +156,10 @@ class Dashboard extends React.Component{
                             </div>
                             <div className={classes.div}>
                                 <TextField 
-                                label="Quantity"
+                                label="Share"
                                 type="number"
-                                id="quantity-input"
-                                onChange={this.hndleQuantityChange}
+                                id="share-input"
+                                onChange={this.handleShareChange}
                                 />
                             </div>
                             <div className={classes.div}>
