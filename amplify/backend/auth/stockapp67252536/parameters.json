@@ -1,8 +1,8 @@
 {
-    "identityPoolName": "stockappa9666594_identitypool_a9666594",
+    "identityPoolName": "stockapp67252536_identitypool_67252536",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "stockaa9666594",
-    "userPoolName": "stockappa9666594_userpool_a9666594",
+    "resourceNameTruncated": "stocka67252536",
+    "userPoolName": "stockapp67252536_userpool_67252536",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -28,9 +28,9 @@
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "stockaa9666594_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "stocka67252536_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "resourceName": "stockappa9666594",
+    "resourceName": "stockapp67252536",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
         "Fn::GetAtt": [
@@ -45,5 +45,10 @@
         ]
     },
     "useDefault": "default",
+    "triggers": "{}",
+    "parentStack": {
+        "Ref": "AWS::StackId"
+    },
+    "permissions": [],
     "dependsOn": []
 }

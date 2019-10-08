@@ -10,22 +10,19 @@ export const createUser = `mutation CreateUser($input: CreateUserInput!) {
     stocks {
       items {
         id
-        symbol
-        amount
         shareAmount
-        name
-        price
+        symbol
         priceOpen
         dayHigh
         dayLow
-        owner
+        dayClose
       }
       nextToken
     }
-    transctions {
+    stockTransaction {
       items {
         id
-        owner
+        shareAmount
       }
       nextToken
     }
@@ -41,22 +38,19 @@ export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
     stocks {
       items {
         id
-        symbol
-        amount
         shareAmount
-        name
-        price
+        symbol
         priceOpen
         dayHigh
         dayLow
-        owner
+        dayClose
       }
       nextToken
     }
-    transctions {
+    stockTransaction {
       items {
         id
-        owner
+        shareAmount
       }
       nextToken
     }
@@ -72,22 +66,19 @@ export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
     stocks {
       items {
         id
-        symbol
-        amount
         shareAmount
-        name
-        price
+        symbol
         priceOpen
         dayHigh
         dayLow
-        owner
+        dayClose
       }
       nextToken
     }
-    transctions {
+    stockTransaction {
       items {
         id
-        owner
+        shareAmount
       }
       nextToken
     }
@@ -97,102 +88,174 @@ export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
 export const createStock = `mutation CreateStock($input: CreateStockInput!) {
   createStock(input: $input) {
     id
-    symbol
-    amount
+    owner {
+      id
+      username
+      email
+      balance
+      stocks {
+        nextToken
+      }
+      stockTransaction {
+        nextToken
+      }
+    }
     shareAmount
-    name
-    price
+    symbol
     priceOpen
     dayHigh
     dayLow
-    owner
+    dayClose
   }
 }
 `;
 export const updateStock = `mutation UpdateStock($input: UpdateStockInput!) {
   updateStock(input: $input) {
     id
-    symbol
-    amount
+    owner {
+      id
+      username
+      email
+      balance
+      stocks {
+        nextToken
+      }
+      stockTransaction {
+        nextToken
+      }
+    }
     shareAmount
-    name
-    price
+    symbol
     priceOpen
     dayHigh
     dayLow
-    owner
+    dayClose
   }
 }
 `;
 export const deleteStock = `mutation DeleteStock($input: DeleteStockInput!) {
   deleteStock(input: $input) {
     id
-    symbol
-    amount
+    owner {
+      id
+      username
+      email
+      balance
+      stocks {
+        nextToken
+      }
+      stockTransaction {
+        nextToken
+      }
+    }
     shareAmount
-    name
-    price
+    symbol
     priceOpen
     dayHigh
     dayLow
-    owner
+    dayClose
   }
 }
 `;
 export const createTransaction = `mutation CreateTransaction($input: CreateTransactionInput!) {
   createTransaction(input: $input) {
     id
-    stockName {
+    owner {
       id
-      symbol
-      amount
+      username
+      email
+      balance
+      stocks {
+        nextToken
+      }
+      stockTransaction {
+        nextToken
+      }
+    }
+    shareAmount
+    stock {
+      id
+      owner {
+        id
+        username
+        email
+        balance
+      }
       shareAmount
-      name
-      price
+      symbol
       priceOpen
       dayHigh
       dayLow
-      owner
+      dayClose
     }
-    owner
   }
 }
 `;
 export const updateTransaction = `mutation UpdateTransaction($input: UpdateTransactionInput!) {
   updateTransaction(input: $input) {
     id
-    stockName {
+    owner {
       id
-      symbol
-      amount
+      username
+      email
+      balance
+      stocks {
+        nextToken
+      }
+      stockTransaction {
+        nextToken
+      }
+    }
+    shareAmount
+    stock {
+      id
+      owner {
+        id
+        username
+        email
+        balance
+      }
       shareAmount
-      name
-      price
+      symbol
       priceOpen
       dayHigh
       dayLow
-      owner
+      dayClose
     }
-    owner
   }
 }
 `;
 export const deleteTransaction = `mutation DeleteTransaction($input: DeleteTransactionInput!) {
   deleteTransaction(input: $input) {
     id
-    stockName {
+    owner {
       id
-      symbol
-      amount
+      username
+      email
+      balance
+      stocks {
+        nextToken
+      }
+      stockTransaction {
+        nextToken
+      }
+    }
+    shareAmount
+    stock {
+      id
+      owner {
+        id
+        username
+        email
+        balance
+      }
       shareAmount
-      name
-      price
+      symbol
       priceOpen
       dayHigh
       dayLow
-      owner
+      dayClose
     }
-    owner
   }
 }
 `;
