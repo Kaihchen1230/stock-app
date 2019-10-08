@@ -1,0 +1,236 @@
+type User {
+  id: ID!
+  username: String
+  email: String
+  balance: Float
+  stocks(filter: ModelStockFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelStockConnection
+  stockTransaction(filter: ModelTransactionFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelTransactionConnection
+}
+
+type Stock {
+  id: ID!
+  owner: User
+  shareAmount: Int
+  symbol: String
+  purchasedPrice: Float
+  dayOpen: Float
+  dayHigh: Float
+  dayLow: Float
+  dayClose: Float
+}
+
+type Transaction {
+  id: ID!
+  owner: User
+  shareAmount: Int
+  stockSymbol: String
+  cost: Float
+}
+
+enum ModelSortDirection {
+  ASC
+  DESC
+}
+
+type ModelUserConnection {
+  items: [User]
+  nextToken: String
+}
+
+input ModelStringFilterInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+}
+
+input ModelIDFilterInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+}
+
+input ModelIntFilterInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  contains: Int
+  notContains: Int
+  between: [Int]
+}
+
+input ModelFloatFilterInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  contains: Float
+  notContains: Float
+  between: [Float]
+}
+
+input ModelBooleanFilterInput {
+  ne: Boolean
+  eq: Boolean
+}
+
+input ModelUserFilterInput {
+  id: ModelIDFilterInput
+  username: ModelStringFilterInput
+  email: ModelStringFilterInput
+  balance: ModelFloatFilterInput
+  and: [ModelUserFilterInput]
+  or: [ModelUserFilterInput]
+  not: ModelUserFilterInput
+}
+
+type Query {
+  getUser(id: ID!): User
+  listUsers(filter: ModelUserFilterInput, limit: Int, nextToken: String): ModelUserConnection
+  getStock(id: ID!): Stock
+  listStocks(filter: ModelStockFilterInput, limit: Int, nextToken: String): ModelStockConnection
+  getTransaction(id: ID!): Transaction
+  listTransactions(filter: ModelTransactionFilterInput, limit: Int, nextToken: String): ModelTransactionConnection
+}
+
+input CreateUserInput {
+  id: ID
+  username: String
+  email: String
+  balance: Float
+}
+
+input UpdateUserInput {
+  id: ID!
+  username: String
+  email: String
+  balance: Float
+}
+
+input DeleteUserInput {
+  id: ID
+}
+
+type Mutation {
+  createUser(input: CreateUserInput!): User
+  updateUser(input: UpdateUserInput!): User
+  deleteUser(input: DeleteUserInput!): User
+  createStock(input: CreateStockInput!): Stock
+  updateStock(input: UpdateStockInput!): Stock
+  deleteStock(input: DeleteStockInput!): Stock
+  createTransaction(input: CreateTransactionInput!): Transaction
+  updateTransaction(input: UpdateTransactionInput!): Transaction
+  deleteTransaction(input: DeleteTransactionInput!): Transaction
+}
+
+type Subscription {
+  onCreateUser: User @aws_subscribe(mutations: ["createUser"])
+  onUpdateUser: User @aws_subscribe(mutations: ["updateUser"])
+  onDeleteUser: User @aws_subscribe(mutations: ["deleteUser"])
+  onCreateStock: Stock @aws_subscribe(mutations: ["createStock"])
+  onUpdateStock: Stock @aws_subscribe(mutations: ["updateStock"])
+  onDeleteStock: Stock @aws_subscribe(mutations: ["deleteStock"])
+  onCreateTransaction: Transaction @aws_subscribe(mutations: ["createTransaction"])
+  onUpdateTransaction: Transaction @aws_subscribe(mutations: ["updateTransaction"])
+  onDeleteTransaction: Transaction @aws_subscribe(mutations: ["deleteTransaction"])
+}
+
+type ModelStockConnection {
+  items: [Stock]
+  nextToken: String
+}
+
+input ModelStockFilterInput {
+  id: ModelIDFilterInput
+  shareAmount: ModelIntFilterInput
+  symbol: ModelStringFilterInput
+  purchasedPrice: ModelFloatFilterInput
+  dayOpen: ModelFloatFilterInput
+  dayHigh: ModelFloatFilterInput
+  dayLow: ModelFloatFilterInput
+  dayClose: ModelFloatFilterInput
+  and: [ModelStockFilterInput]
+  or: [ModelStockFilterInput]
+  not: ModelStockFilterInput
+}
+
+input CreateStockInput {
+  id: ID
+  shareAmount: Int
+  symbol: String
+  purchasedPrice: Float
+  dayOpen: Float
+  dayHigh: Float
+  dayLow: Float
+  dayClose: Float
+  stockOwnerId: ID
+}
+
+input UpdateStockInput {
+  id: ID!
+  shareAmount: Int
+  symbol: String
+  purchasedPrice: Float
+  dayOpen: Float
+  dayHigh: Float
+  dayLow: Float
+  dayClose: Float
+  stockOwnerId: ID
+}
+
+input DeleteStockInput {
+  id: ID
+}
+
+type ModelTransactionConnection {
+  items: [Transaction]
+  nextToken: String
+}
+
+input ModelTransactionFilterInput {
+  id: ModelIDFilterInput
+  shareAmount: ModelIntFilterInput
+  stockSymbol: ModelStringFilterInput
+  cost: ModelFloatFilterInput
+  and: [ModelTransactionFilterInput]
+  or: [ModelTransactionFilterInput]
+  not: ModelTransactionFilterInput
+}
+
+input CreateTransactionInput {
+  id: ID
+  shareAmount: Int
+  stockSymbol: String
+  cost: Float
+  transactionOwnerId: ID
+}
+
+input UpdateTransactionInput {
+  id: ID!
+  shareAmount: Int
+  stockSymbol: String
+  cost: Float
+  transactionOwnerId: ID
+}
+
+input DeleteTransactionInput {
+  id: ID
+}
