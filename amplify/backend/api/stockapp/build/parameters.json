@@ -1,0 +1,14 @@
+{
+    "CreateAPIKey": 0,
+    "AppSyncApiName": "stockApp",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "DynamoDBEnableServerSideEncryption": "false",
+    "AuthCognitoUserPoolId": {
+        "Fn::GetAtt": [
+            "authstockapp67252536",
+            "Outputs.UserPoolId"
+        ]
+    },
+    "S3DeploymentBucket": "stock-app-stockenv-20191005210355-deployment",
+    "S3DeploymentRootKey": "amplify-appsync-files/80b2b40e4325b070f3193d4284e3639e3d2f66b2"
+}
