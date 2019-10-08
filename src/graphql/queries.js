@@ -23,6 +23,8 @@ export const getUser = `query GetUser($id: ID!) {
       items {
         id
         shareAmount
+        stockSymbol
+        cost
       }
       nextToken
     }
@@ -116,21 +118,8 @@ export const getTransaction = `query GetTransaction($id: ID!) {
       }
     }
     shareAmount
-    stock {
-      id
-      owner {
-        id
-        username
-        email
-        balance
-      }
-      shareAmount
-      symbol
-      priceOpen
-      dayHigh
-      dayLow
-      dayClose
-    }
+    stockSymbol
+    cost
   }
 }
 `;
@@ -149,15 +138,8 @@ export const listTransactions = `query ListTransactions(
         balance
       }
       shareAmount
-      stock {
-        id
-        shareAmount
-        symbol
-        priceOpen
-        dayHigh
-        dayLow
-        dayClose
-      }
+      stockSymbol
+      cost
     }
     nextToken
   }

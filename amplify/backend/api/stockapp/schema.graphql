@@ -22,5 +22,6 @@ type Transaction @model{
 	id: ID!
 	owner: User @connection(name:"transaction")
 	shareAmount: Int
-	stock: Stock @connection
+	stockSymbol: String
+	cost: Float
 }

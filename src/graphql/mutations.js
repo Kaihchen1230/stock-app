@@ -23,6 +23,8 @@ export const createUser = `mutation CreateUser($input: CreateUserInput!) {
       items {
         id
         shareAmount
+        stockSymbol
+        cost
       }
       nextToken
     }
@@ -51,6 +53,8 @@ export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
       items {
         id
         shareAmount
+        stockSymbol
+        cost
       }
       nextToken
     }
@@ -79,6 +83,8 @@ export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
       items {
         id
         shareAmount
+        stockSymbol
+        cost
       }
       nextToken
     }
@@ -173,21 +179,8 @@ export const createTransaction = `mutation CreateTransaction($input: CreateTrans
       }
     }
     shareAmount
-    stock {
-      id
-      owner {
-        id
-        username
-        email
-        balance
-      }
-      shareAmount
-      symbol
-      priceOpen
-      dayHigh
-      dayLow
-      dayClose
-    }
+    stockSymbol
+    cost
   }
 }
 `;
@@ -207,21 +200,8 @@ export const updateTransaction = `mutation UpdateTransaction($input: UpdateTrans
       }
     }
     shareAmount
-    stock {
-      id
-      owner {
-        id
-        username
-        email
-        balance
-      }
-      shareAmount
-      symbol
-      priceOpen
-      dayHigh
-      dayLow
-      dayClose
-    }
+    stockSymbol
+    cost
   }
 }
 `;
@@ -241,21 +221,8 @@ export const deleteTransaction = `mutation DeleteTransaction($input: DeleteTrans
       }
     }
     shareAmount
-    stock {
-      id
-      owner {
-        id
-        username
-        email
-        balance
-      }
-      shareAmount
-      symbol
-      priceOpen
-      dayHigh
-      dayLow
-      dayClose
-    }
+    stockSymbol
+    cost
   }
 }
 `;

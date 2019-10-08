@@ -41,10 +41,12 @@ class Dashboard extends React.Component{
             validStock: true,
             userData: {},
             stockId: "",
+            userId: "",
             transactionId: "",
             balance: 0,
             ownedStocks: [],
-            totalShare: 0
+            totalShare: 0,
+            portfolio: 0
         }
     }
 
@@ -64,6 +66,7 @@ class Dashboard extends React.Component{
             console.log('this is data from mutations: ', data)
             this.setState({
                 userData: data,
+                userId: data.getUser.id,
                 balance: 5000
             })
 
@@ -87,6 +90,7 @@ class Dashboard extends React.Component{
                 // console.log(data.getUser.username, ' already existed');
                 this.setState({
                     userData: data.getUser,
+                    userId: data.getUser.id,
                     balance: data.getUser.balance,
                     ownedStocks: data.getUser.stocks.items
                 }, () => {console.log('this is the ownedStock for the state:  ', this.state.ownedStocks)})
@@ -108,7 +112,36 @@ class Dashboard extends React.Component{
             // console.log('this is the currentUser in didmount: ', this.state.currentUser)
             this.checkUserExisted();
         })
+
+
     }
+
+    calcuatePortfolio = () => {
+
+        if(this.state.ownedStocks.length){
+            let currentPortfolio = 0;
+            this.state.ownedStocks.forEach((stock, ind) => {
+                currentPortfolio += (stock.shareAmount * stock.priceOpen)
+            })
+            return currentPortfolio
+        }
+        return 0
+    }
+
+    async componentDidUpdate() {
+
+        try{
+            const {data} = await API.graphql(graphqlOperation(queries.getUser, {id: this.state.userId}));
+            this.setState({
+            ownedStocks: (data.getUser.stocks ? data.getUser.stocks.items : []),
+            portfolio: this.calcuatePortfolio()
+            })
+        }catch(error){
+            console.log('there is an error in component did update to fetch data: ', error)
+        }
+        
+    }
+    
 
     handleSymbolChange = (event) => {
         event.preventDefault();
@@ -122,7 +155,7 @@ class Dashboard extends React.Component{
     handleShareChange = (event) => {
         event.preventDefault();
 
-        const share = event.target.value;
+        const share = parseInt(event.target.value);
 
         this.setState({
             share: share
@@ -142,38 +175,6 @@ class Dashboard extends React.Component{
         return d;
     }
 
-    // createStock = async stock => {
-    //     try{
-    //         await API.graphql(graphqlOperation(mutations.createStock, {input: stock}))
-    //             .then(async res => {
-    //                 console.log('this is stock data: ',res.data)
-    //                 this.setState({
-    //                     stockId: res.data.createStock.id,
-    //                 }, () => {console.log('this is stockId: ', this.state.stockId)})
-    //             })
-            
-    //     }catch(error){
-    //         console.log('there is an error to create a stcock: ', error)
-    //     }
-    // }
-
-    // createTransaction = async transaction => {
-    //     try{
-    //         await API.graphql(graphqlOperation(mutations.createTransaction, {input: transaction}))
-    //             .then(async res => {
-    //                 console.log('this is tran data: ', res.data)
-    //                 this.setState({
-    //                     transactionId: res.data.createTransaction.id
-    //                 }, ()=> {console.log('this is transactionId: ', this.state.transactionId)})
-    //             })
-            
-                
-    //     }catch(error){
-    //         console.log("there is an error to create the transaction: ", error)
-    //     }
-    // }
-
-    
 
     buyStack = async () => {
         console.log('this is the stock info inside of buystock: ', this.state.stockInfo)
@@ -217,92 +218,78 @@ class Dashboard extends React.Component{
             const ownedStocks = this.state.ownedStocks;
             console.log('this is ownedStock: ', ownedStocks)
             
-            
+            const currentStockId = userId + this.state.tickerSymbol.toUpperCase();
 
-            ownedStocks.forEach(async (item, i) => {
-                if(item.symbol.toUpperCase() === this.state.tickerSymbol.toUpperCase()){
-                    console.log('user already bought the current stock, just update it in db');
+            ownedStocks.forEach(async (item, ind) => {
+                if(item.id.toUpperCase() === currentStockId.toUpperCase()){
                     this.setState({
-                        stockId: item.id,
+                        stockId: currentStockId,
                         totalShare: this.state.share + item.shareAmount
-                    }, () => {console.log('this is stockId in for each: ', this.state.stockId)})
-                    // currentStockId = item.id;
-                    // totalShare = this.state.share + item.shareAmount;
+                    })
                 }
             })
-
-            // console.log('this is the stockId outside of the foreach: ', this.state.stockId)
+            console.log('this is the state: ', this.state)
             if(this.state.stockId){
-                // console.log('this is the current stock id inside of the if statmenet after foreach: ', currentStockId);
-                // console.log('this is total share in side of if: ', totalShare)
-                const updateStockInput = {
-                    id: this.state.stockId,
-                    priceOpen: open,
-                    dayHigh: high,
-                    dayLow: low,
-                    dayClose: close,
-                    stockOwnerId: userId,
-                    shareAmount: this.state.totalShare
+                try{
+                    const updateStockInput = {
+                        id: this.state.stockId,
+                        shareAmount: this.state.totalShare,
+                        priceOpen: open,
+                        dayHigh: high,
+                        dayLow: low,
+                        dayClose: close
+                    }
 
+                    const {data} = await API.graphql(graphqlOperation(mutations.updateStock, {input: updateStockInput}))
+                    console.log('this is the update stockinfo: ', data)
+                }catch(error){
+                    console.log('there is an error to update the stock: ', error)
                 }
-                await API.graphql(graphqlOperation(mutations.updateStock, {input: updateStockInput}))
-                    .then(async res => {
-                        console.log('already exist the current stock, and here is the update version: ', res.data)
-                    })
+                
             }else{
-                const stockInput = {
-                    symbol: this.state.tickerSymbol,
-                    priceOpen: open,
-                    dayHigh: high,
-                    dayLow: low,
-                    dayClose: close,
-                    stockOwnerId: userId,
-                    shareAmount: this.state.share
+                try{
+
+                    const createStockInput = {
+                        id: currentStockId,
+                        symbol: this.state.tickerSymbol,
+                        shareAmount: this.state.share,
+                        priceOpen: open,
+                        dayHigh: high,
+                        dayLow: low,
+                        dayClose: close,
+                        stockOwnerId: userId,
+                    
+                    }
+                    console.log('this is createStockInput: ', createStockInput)
+                    const {data} = await API.graphql(graphqlOperation(mutations.createStock, {input: createStockInput}));
+                    console.log('this is data for create stock input: ', data);
+                }catch(error){
+                    console.log('there is an error to create the stock data: ', error)
                 }
-    
-                await API.graphql(graphqlOperation(mutations.createStock, {input: stockInput}))
-                    .then(async res => {
-                        console.log('this is stock data: ',res.data)
-                        this.setState({
-                            stockId: res.data.createStock.id,
-                        }, () => {console.log('this is stockId: ', this.state.stockId)})
-                    })
             }
             
-            const userInput = {
-                id: userId,
+            const transactionInput = {
+                shareAmount: this.state.share,
+                cost: cost,
+                stockSymbol: this.state.tickerSymbol
+            }
+            
+            const {data} = await API.graphql(graphqlOperation(mutations.createTransaction, {input: transactionInput}));
+            console.log('this is the transactionInput: ', data);
+
+            const updateUserInput = {
+                id: this.state.userId,
                 balance: remain
             }
 
-            await API.graphql(graphqlOperation(mutations.updateUser, {input: userInput}))
-                .then(async res => {
-                    console.log('this is the user data after buy the stock: ', res.data)
-                })
-            console.log('this is userdata in buy stock: ', this.state.userData)
-            
-            
+            const updatedUserData = await API.graphql(graphqlOperation(mutations.updateUser, {input: updateUserInput}));
+            console.log('this is the updateUserData: ', updatedUserData.data);
 
-            const transactionInput = {
-                shareAmount: this.state.share,
-                transactionOwnerId: userId,
-                transactionStockId: this.state.stockId
-            }
-
-            await API.graphql(graphqlOperation(mutations.createTransaction, {input: transactionInput}))
-                .then(async res => {
-                    console.log('this is tran data: ', res.data)
-                    this.setState({
-                        transactionId: res.data.createTransaction.id
-                    }, ()=> {console.log('this is transactionId: ', this.state.transactionId)})
-                })
-
-            const {data} = await API.graphql(graphqlOperation(queries.getUser, {id: userId} ));
-            console.log('this is user data after everything: ', data)
             this.setState({
-                balance: remain,
-                stockId: ''
+                balance: remain
             })
 
+            console.log('this is state info: ', this.state)
         }else{
             alert('your balance is not enough!!!')
         }
@@ -341,11 +328,12 @@ class Dashboard extends React.Component{
                 <Grid container spacing={3}>
                     {/* to display the data */}
                     <Grid item xs={12} sm={6} className={classes.Grid}>
-                        <h2>Portfoil: </h2>
+                        <h2>Portfolio: ${this.state.portfolio}</h2>
+
                     </Grid>
                     {/* form to ask user to purchase the stock */}
                     <Grid item xs={12} sm={6}>
-                        <h2>Balance: {this.state.balance}</h2>
+                        <h2>Balance: ${this.state.balance}</h2>
                         <form id="purchase-form" onSubmit={this.handleSubmit}>
                             <div className={classes.div}>
                                 <TextField 

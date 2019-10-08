@@ -23,6 +23,8 @@ export const onCreateUser = `subscription OnCreateUser {
       items {
         id
         shareAmount
+        stockSymbol
+        cost
       }
       nextToken
     }
@@ -51,6 +53,8 @@ export const onUpdateUser = `subscription OnUpdateUser {
       items {
         id
         shareAmount
+        stockSymbol
+        cost
       }
       nextToken
     }
@@ -79,6 +83,8 @@ export const onDeleteUser = `subscription OnDeleteUser {
       items {
         id
         shareAmount
+        stockSymbol
+        cost
       }
       nextToken
     }
@@ -173,21 +179,8 @@ export const onCreateTransaction = `subscription OnCreateTransaction {
       }
     }
     shareAmount
-    stock {
-      id
-      owner {
-        id
-        username
-        email
-        balance
-      }
-      shareAmount
-      symbol
-      priceOpen
-      dayHigh
-      dayLow
-      dayClose
-    }
+    stockSymbol
+    cost
   }
 }
 `;
@@ -207,21 +200,8 @@ export const onUpdateTransaction = `subscription OnUpdateTransaction {
       }
     }
     shareAmount
-    stock {
-      id
-      owner {
-        id
-        username
-        email
-        balance
-      }
-      shareAmount
-      symbol
-      priceOpen
-      dayHigh
-      dayLow
-      dayClose
-    }
+    stockSymbol
+    cost
   }
 }
 `;
@@ -241,21 +221,8 @@ export const onDeleteTransaction = `subscription OnDeleteTransaction {
       }
     }
     shareAmount
-    stock {
-      id
-      owner {
-        id
-        username
-        email
-        balance
-      }
-      shareAmount
-      symbol
-      priceOpen
-      dayHigh
-      dayLow
-      dayClose
-    }
+    stockSymbol
+    cost
   }
 }
 `;
