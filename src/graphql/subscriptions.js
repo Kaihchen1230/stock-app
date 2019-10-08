@@ -10,21 +10,22 @@ export const onCreateUser = `subscription OnCreateUser {
     stocks {
       items {
         id
-        symbol
         shareAmount
-        name
-        price
-        priceOpen
+        symbol
+        purchasedPrice
+        dayOpen
         dayHigh
         dayLow
-        owner
+        dayClose
       }
       nextToken
     }
-    transctions {
+    stockTransaction {
       items {
         id
-        owner
+        shareAmount
+        stockSymbol
+        cost
       }
       nextToken
     }
@@ -40,21 +41,22 @@ export const onUpdateUser = `subscription OnUpdateUser {
     stocks {
       items {
         id
-        symbol
         shareAmount
-        name
-        price
-        priceOpen
+        symbol
+        purchasedPrice
+        dayOpen
         dayHigh
         dayLow
-        owner
+        dayClose
       }
       nextToken
     }
-    transctions {
+    stockTransaction {
       items {
         id
-        owner
+        shareAmount
+        stockSymbol
+        cost
       }
       nextToken
     }
@@ -70,120 +72,163 @@ export const onDeleteUser = `subscription OnDeleteUser {
     stocks {
       items {
         id
-        symbol
         shareAmount
-        name
-        price
-        priceOpen
+        symbol
+        purchasedPrice
+        dayOpen
         dayHigh
         dayLow
-        owner
+        dayClose
       }
       nextToken
     }
-    transctions {
+    stockTransaction {
       items {
         id
-        owner
+        shareAmount
+        stockSymbol
+        cost
       }
       nextToken
     }
   }
 }
 `;
-export const onCreateStock = `subscription OnCreateStock($owner: String!) {
-  onCreateStock(owner: $owner) {
+export const onCreateStock = `subscription OnCreateStock {
+  onCreateStock {
     id
-    symbol
+    owner {
+      id
+      username
+      email
+      balance
+      stocks {
+        nextToken
+      }
+      stockTransaction {
+        nextToken
+      }
+    }
     shareAmount
-    name
-    price
-    priceOpen
+    symbol
+    purchasedPrice
+    dayOpen
     dayHigh
     dayLow
-    owner
+    dayClose
   }
 }
 `;
-export const onUpdateStock = `subscription OnUpdateStock($owner: String!) {
-  onUpdateStock(owner: $owner) {
+export const onUpdateStock = `subscription OnUpdateStock {
+  onUpdateStock {
     id
-    symbol
+    owner {
+      id
+      username
+      email
+      balance
+      stocks {
+        nextToken
+      }
+      stockTransaction {
+        nextToken
+      }
+    }
     shareAmount
-    name
-    price
-    priceOpen
+    symbol
+    purchasedPrice
+    dayOpen
     dayHigh
     dayLow
-    owner
+    dayClose
   }
 }
 `;
-export const onDeleteStock = `subscription OnDeleteStock($owner: String!) {
-  onDeleteStock(owner: $owner) {
+export const onDeleteStock = `subscription OnDeleteStock {
+  onDeleteStock {
     id
-    symbol
+    owner {
+      id
+      username
+      email
+      balance
+      stocks {
+        nextToken
+      }
+      stockTransaction {
+        nextToken
+      }
+    }
     shareAmount
-    name
-    price
-    priceOpen
+    symbol
+    purchasedPrice
+    dayOpen
     dayHigh
     dayLow
-    owner
+    dayClose
   }
 }
 `;
-export const onCreateTransaction = `subscription OnCreateTransaction($owner: String!) {
-  onCreateTransaction(owner: $owner) {
+export const onCreateTransaction = `subscription OnCreateTransaction {
+  onCreateTransaction {
     id
-    stockName {
+    owner {
       id
-      symbol
-      shareAmount
-      name
-      price
-      priceOpen
-      dayHigh
-      dayLow
-      owner
+      username
+      email
+      balance
+      stocks {
+        nextToken
+      }
+      stockTransaction {
+        nextToken
+      }
     }
-    owner
+    shareAmount
+    stockSymbol
+    cost
   }
 }
 `;
-export const onUpdateTransaction = `subscription OnUpdateTransaction($owner: String!) {
-  onUpdateTransaction(owner: $owner) {
+export const onUpdateTransaction = `subscription OnUpdateTransaction {
+  onUpdateTransaction {
     id
-    stockName {
+    owner {
       id
-      symbol
-      shareAmount
-      name
-      price
-      priceOpen
-      dayHigh
-      dayLow
-      owner
+      username
+      email
+      balance
+      stocks {
+        nextToken
+      }
+      stockTransaction {
+        nextToken
+      }
     }
-    owner
+    shareAmount
+    stockSymbol
+    cost
   }
 }
 `;
-export const onDeleteTransaction = `subscription OnDeleteTransaction($owner: String!) {
-  onDeleteTransaction(owner: $owner) {
+export const onDeleteTransaction = `subscription OnDeleteTransaction {
+  onDeleteTransaction {
     id
-    stockName {
+    owner {
       id
-      symbol
-      shareAmount
-      name
-      price
-      priceOpen
-      dayHigh
-      dayLow
-      owner
+      username
+      email
+      balance
+      stocks {
+        nextToken
+      }
+      stockTransaction {
+        nextToken
+      }
     }
-    owner
+    shareAmount
+    stockSymbol
+    cost
   }
 }
 `;

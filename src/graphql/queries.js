@@ -10,21 +10,22 @@ export const getUser = `query GetUser($id: ID!) {
     stocks {
       items {
         id
-        symbol
         shareAmount
-        name
-        price
-        priceOpen
+        symbol
+        purchasedPrice
+        dayOpen
         dayHigh
         dayLow
-        owner
+        dayClose
       }
       nextToken
     }
-    transctions {
+    stockTransaction {
       items {
         id
-        owner
+        shareAmount
+        stockSymbol
+        cost
       }
       nextToken
     }
@@ -45,7 +46,7 @@ export const listUsers = `query ListUsers(
       stocks {
         nextToken
       }
-      transctions {
+      stockTransaction {
         nextToken
       }
     }
@@ -56,14 +57,25 @@ export const listUsers = `query ListUsers(
 export const getStock = `query GetStock($id: ID!) {
   getStock(id: $id) {
     id
-    symbol
+    owner {
+      id
+      username
+      email
+      balance
+      stocks {
+        nextToken
+      }
+      stockTransaction {
+        nextToken
+      }
+    }
     shareAmount
-    name
-    price
-    priceOpen
+    symbol
+    purchasedPrice
+    dayOpen
     dayHigh
     dayLow
-    owner
+    dayClose
   }
 }
 `;
@@ -75,14 +87,19 @@ export const listStocks = `query ListStocks(
   listStocks(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
-      symbol
+      owner {
+        id
+        username
+        email
+        balance
+      }
       shareAmount
-      name
-      price
-      priceOpen
+      symbol
+      purchasedPrice
+      dayOpen
       dayHigh
       dayLow
-      owner
+      dayClose
     }
     nextToken
   }
@@ -91,18 +108,21 @@ export const listStocks = `query ListStocks(
 export const getTransaction = `query GetTransaction($id: ID!) {
   getTransaction(id: $id) {
     id
-    stockName {
+    owner {
       id
-      symbol
-      shareAmount
-      name
-      price
-      priceOpen
-      dayHigh
-      dayLow
-      owner
+      username
+      email
+      balance
+      stocks {
+        nextToken
+      }
+      stockTransaction {
+        nextToken
+      }
     }
-    owner
+    shareAmount
+    stockSymbol
+    cost
   }
 }
 `;
@@ -114,18 +134,15 @@ export const listTransactions = `query ListTransactions(
   listTransactions(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
-      stockName {
+      owner {
         id
-        symbol
-        shareAmount
-        name
-        price
-        priceOpen
-        dayHigh
-        dayLow
-        owner
+        username
+        email
+        balance
       }
-      owner
+      shareAmount
+      stockSymbol
+      cost
     }
     nextToken
   }
