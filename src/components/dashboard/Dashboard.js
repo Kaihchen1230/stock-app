@@ -3,10 +3,9 @@ import * as mutations from '../../graphql/mutations'
 import * as queries from '../../graphql/queries';
 import Amplify, {Auth, API, graphqlOperation } from 'aws-amplify';
 import axios from 'axios';
+import DisplayStock from './displayStock';
 import { withStyles } from '@material-ui/core/styles';
 import {TextField, Grid, Button} from '@material-ui/core';
-import { async } from 'q';
-import { updateExpression } from '@babel/types';
 
 
 const dashBoardStyle = () => ({
@@ -134,7 +133,8 @@ class Dashboard extends React.Component{
             const {data} = await API.graphql(graphqlOperation(queries.getUser, {id: this.state.userId}));
             this.setState({
             ownedStocks: (data.getUser.stocks ? data.getUser.stocks.items : []),
-            portfolio: this.calcuatePortfolio()
+            portfolio: this.calcuatePortfolio(),
+            balance: data.getUser.balance
             })
         }catch(error){
             console.log('there is an error in component did update to fetch data: ', error)
@@ -325,14 +325,14 @@ class Dashboard extends React.Component{
         const { classes } = this.props;
         return(
             <div className={classes.root}>
-                <Grid container spacing={3}>
+                <Grid container spacing={5}>
                     {/* to display the data */}
-                    <Grid item xs={12} sm={6} className={classes.Grid}>
+                    <Grid item xs={12} sm={8} className={classes.Grid}>
                         <h2>Portfolio: ${this.state.portfolio}</h2>
-
+                        <DisplayStock/>
                     </Grid>
                     {/* form to ask user to purchase the stock */}
-                    <Grid item xs={12} sm={6}>
+                    <Grid item xs={12} sm={4}>
                         <h2>Balance: ${this.state.balance}</h2>
                         <form id="purchase-form" onSubmit={this.handleSubmit}>
                             <div className={classes.div}>
