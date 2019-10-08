@@ -4,8 +4,9 @@ import * as queries from '../../graphql/queries';
 import Amplify, {Auth, API, graphqlOperation } from 'aws-amplify';
 import axios from 'axios';
 import DisplayStock from './displayStock';
+import PopOut from './popOut';
 import { withStyles } from '@material-ui/core/styles';
-import {TextField, Grid, Button} from '@material-ui/core';
+import {TextField, Grid, Button, Divider} from '@material-ui/core';
 
 
 const dashBoardStyle = () => ({
@@ -45,7 +46,9 @@ class Dashboard extends React.Component{
             balance: 0,
             ownedStocks: [],
             totalShare: 0,
-            portfolio: 0
+            portfolio: 0,
+            display: false,
+            transactions: []
         }
     }
 
@@ -91,8 +94,9 @@ class Dashboard extends React.Component{
                     userData: data.getUser,
                     userId: data.getUser.id,
                     balance: data.getUser.balance,
-                    ownedStocks: data.getUser.stocks.items
-                }, () => {console.log('this is the ownedStock for the state:  ', this.state.ownedStocks)})
+                    ownedStocks: data.getUser.stocks.items,
+                    transactions: data.getUser.stockTransaction.items
+                }, () => {console.log('this is the ownedStock for the state:  ', this.state.ownedStocks, ' and transactions: ', this.state.transactions)})
             }
         }catch(error){
             console.log('there is error to fetch user data in checkuserexisted: ', error);
@@ -120,7 +124,7 @@ class Dashboard extends React.Component{
         if(this.state.ownedStocks.length){
             let currentPortfolio = 0;
             this.state.ownedStocks.forEach((stock, ind) => {
-                currentPortfolio += (stock.shareAmount * stock.priceOpen)
+                currentPortfolio += (stock.shareAmount * stock.dayOpen)
             })
             return currentPortfolio
         }
@@ -133,6 +137,7 @@ class Dashboard extends React.Component{
             const {data} = await API.graphql(graphqlOperation(queries.getUser, {id: this.state.userId}));
             this.setState({
             ownedStocks: (data.getUser.stocks ? data.getUser.stocks.items : []),
+            transactions: (data.getUser.stockTransaction ? data.getUser.stockTransaction.items: []),
             portfolio: this.calcuatePortfolio(),
             balance: data.getUser.balance
             })
@@ -188,8 +193,12 @@ class Dashboard extends React.Component{
         const currentHour = today.getHours();
         const currentMin = today.getMinutes();
         let lastFriday = this.getLastFridayOf(today);
-        if(currentHour < 9 || (currentHour >= 9 && currentMin < 35)){
-            alert('the stock market is not opened yet!! Will be using last week firday data');
+        if(currentHour < 9 || (currentHour === 9 && currentMin < 35)){
+            // alert('the stock market is not opened yet!! Will be using last week firday data');
+            this.setState({
+                message: 'the stock market is not opened yet!! Will be using last week firday data',
+                display: true
+            })
             // return;
             const lastFridayYear = lastFriday.getFullYear();
             const lastFridayMonth = lastFriday.getMonth() + 1;
@@ -234,7 +243,7 @@ class Dashboard extends React.Component{
                     const updateStockInput = {
                         id: this.state.stockId,
                         shareAmount: this.state.totalShare,
-                        priceOpen: open,
+                        dayOpen: open,
                         dayHigh: high,
                         dayLow: low,
                         dayClose: close
@@ -253,7 +262,8 @@ class Dashboard extends React.Component{
                         id: currentStockId,
                         symbol: this.state.tickerSymbol,
                         shareAmount: this.state.share,
-                        priceOpen: open,
+                        purchasedPrice: open,
+                        dayOpen: open,
                         dayHigh: high,
                         dayLow: low,
                         dayClose: close,
@@ -270,8 +280,9 @@ class Dashboard extends React.Component{
             
             const transactionInput = {
                 shareAmount: this.state.share,
-                cost: cost,
-                stockSymbol: this.state.tickerSymbol
+                cost: cost.toFixed(2),
+                stockSymbol: this.state.tickerSymbol,
+                transactionOwnerId: userId
             }
             
             const {data} = await API.graphql(graphqlOperation(mutations.createTransaction, {input: transactionInput}));
@@ -279,7 +290,8 @@ class Dashboard extends React.Component{
 
             const updateUserInput = {
                 id: this.state.userId,
-                balance: remain
+                balance: remain,
+
             }
 
             const updatedUserData = await API.graphql(graphqlOperation(mutations.updateUser, {input: updateUserInput}));
@@ -291,7 +303,11 @@ class Dashboard extends React.Component{
 
             console.log('this is state info: ', this.state)
         }else{
-            alert('your balance is not enough!!!')
+            // alert('your balance is not enough!!!')
+            this.setState({
+                display: true,
+                message: 'Your balance is not enough!!!'
+            })
         }
         
         
@@ -300,9 +316,7 @@ class Dashboard extends React.Component{
 
     handleSubmit = async event => {
         event.preventDefault();
-        
-        let form = document.querySelector('#purchase-form');
-        form.reset();
+    
 
         axios.get(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${this.state.tickerSymbol}&apikey=${this.state.API_KEY}`)
             .then(res => {
@@ -313,9 +327,15 @@ class Dashboard extends React.Component{
                 }, ()=> console.log('this is the state stockInfo in the handlesubmit: ', this.state.stockInfo))
 
                 if(!stockInfo.hasOwnProperty('Error Message')){
+                    let form = document.querySelector('#purchase-form');
+                    form.reset();
                     this.buyStack();
                 }else{
-                    alert(`${this.state.tickerSymbol} doesn't existed!!!!`)
+                    // alert(`${this.state.tickerSymbol} doesn't existed!!!!`)
+                    this.setState({
+                        display: true,
+                        message: `${this.state.tickerSymbol} doesn't existed`
+                    })
                 }
             })
         
@@ -325,20 +345,26 @@ class Dashboard extends React.Component{
         const { classes } = this.props;
         return(
             <div className={classes.root}>
+                <PopOut 
+                    message={this.state.message}
+                    open={this.state.display}
+                    close={()=> {this.setState({
+                        display: false
+                    })}}
+                />
                 <Grid container spacing={5}>
                     {/* to display the data */}
-                    <Grid item xs={12} sm={8} className={classes.Grid}>
-                        <h2>Portfolio: ${this.state.portfolio}</h2>
-                        <DisplayStock/>
+                    <Grid item xs={12} sm={9} className={classes.Grid}>
+                        <h2>Portfolio: ${this.state.portfolio.toFixed(2)}</h2>
+                        <DisplayStock stocks={this.state.ownedStocks}/>
                     </Grid>
                     {/* form to ask user to purchase the stock */}
-                    <Grid item xs={12} sm={4}>
-                        <h2>Balance: ${this.state.balance}</h2>
+                    <Grid item xs={12} sm={3}>
+                        <h2>Balance: ${this.state.balance.toFixed(2)}</h2>
                         <form id="purchase-form" onSubmit={this.handleSubmit}>
                             <div className={classes.div}>
                                 <TextField 
                                 label="Ticker Symbol"
-                                
                                 onChange={this.handleSymbolChange}
                                 />
                             </div>

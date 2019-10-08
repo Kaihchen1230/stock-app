@@ -12,7 +12,8 @@ export const onCreateUser = `subscription OnCreateUser {
         id
         shareAmount
         symbol
-        priceOpen
+        purchasedPrice
+        dayOpen
         dayHigh
         dayLow
         dayClose
@@ -42,7 +43,8 @@ export const onUpdateUser = `subscription OnUpdateUser {
         id
         shareAmount
         symbol
-        priceOpen
+        purchasedPrice
+        dayOpen
         dayHigh
         dayLow
         dayClose
@@ -72,7 +74,8 @@ export const onDeleteUser = `subscription OnDeleteUser {
         id
         shareAmount
         symbol
-        priceOpen
+        purchasedPrice
+        dayOpen
         dayHigh
         dayLow
         dayClose
@@ -108,7 +111,8 @@ export const onCreateStock = `subscription OnCreateStock {
     }
     shareAmount
     symbol
-    priceOpen
+    purchasedPrice
+    dayOpen
     dayHigh
     dayLow
     dayClose
@@ -132,7 +136,8 @@ export const onUpdateStock = `subscription OnUpdateStock {
     }
     shareAmount
     symbol
-    priceOpen
+    purchasedPrice
+    dayOpen
     dayHigh
     dayLow
     dayClose
@@ -156,7 +161,8 @@ export const onDeleteStock = `subscription OnDeleteStock {
     }
     shareAmount
     symbol
-    priceOpen
+    purchasedPrice
+    dayOpen
     dayHigh
     dayLow
     dayClose

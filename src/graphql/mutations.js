@@ -12,7 +12,8 @@ export const createUser = `mutation CreateUser($input: CreateUserInput!) {
         id
         shareAmount
         symbol
-        priceOpen
+        purchasedPrice
+        dayOpen
         dayHigh
         dayLow
         dayClose
@@ -42,7 +43,8 @@ export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
         id
         shareAmount
         symbol
-        priceOpen
+        purchasedPrice
+        dayOpen
         dayHigh
         dayLow
         dayClose
@@ -72,7 +74,8 @@ export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
         id
         shareAmount
         symbol
-        priceOpen
+        purchasedPrice
+        dayOpen
         dayHigh
         dayLow
         dayClose
@@ -108,7 +111,8 @@ export const createStock = `mutation CreateStock($input: CreateStockInput!) {
     }
     shareAmount
     symbol
-    priceOpen
+    purchasedPrice
+    dayOpen
     dayHigh
     dayLow
     dayClose
@@ -132,7 +136,8 @@ export const updateStock = `mutation UpdateStock($input: UpdateStockInput!) {
     }
     shareAmount
     symbol
-    priceOpen
+    purchasedPrice
+    dayOpen
     dayHigh
     dayLow
     dayClose
@@ -156,7 +161,8 @@ export const deleteStock = `mutation DeleteStock($input: DeleteStockInput!) {
     }
     shareAmount
     symbol
-    priceOpen
+    purchasedPrice
+    dayOpen
     dayHigh
     dayLow
     dayClose

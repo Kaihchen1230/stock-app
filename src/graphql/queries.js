@@ -12,7 +12,8 @@ export const getUser = `query GetUser($id: ID!) {
         id
         shareAmount
         symbol
-        priceOpen
+        purchasedPrice
+        dayOpen
         dayHigh
         dayLow
         dayClose
@@ -70,7 +71,8 @@ export const getStock = `query GetStock($id: ID!) {
     }
     shareAmount
     symbol
-    priceOpen
+    purchasedPrice
+    dayOpen
     dayHigh
     dayLow
     dayClose
@@ -93,7 +95,8 @@ export const listStocks = `query ListStocks(
       }
       shareAmount
       symbol
-      priceOpen
+      purchasedPrice
+      dayOpen
       dayHigh
       dayLow
       dayClose

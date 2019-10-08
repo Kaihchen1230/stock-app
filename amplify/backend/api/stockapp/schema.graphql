@@ -12,7 +12,8 @@ type Stock @model{
 	owner: User @connection(name:"purchasedStocks")
 	shareAmount: Int
 	symbol: String
-	priceOpen: Float
+	purchasedPrice: Float
+	dayOpen: Float
 	dayHigh: Float
 	dayLow: Float
 	dayClose: Float
