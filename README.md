@@ -16,3 +16,5 @@ To Run the Program:
 5. Run `amplify init` to initilze profile on the cloud
 6. Run `amplify add api` choose GraphQL and use Cognito for user authentication
 7. Fianlly run `amplify push` too push all of the information to the cloud
+
+<a href="http://bit.ly/2pY8s9L"> Demo Link </a>
