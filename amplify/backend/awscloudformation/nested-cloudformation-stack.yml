@@ -68,15 +68,15 @@
 				}
 			}
 		},
-		"authstockapp67252536": {
+		"authstockapp8a33ee07": {
 			"Type": "AWS::CloudFormation::Stack",
 			"Properties": {
-				"TemplateURL": "https://s3.amazonaws.com/stock-app-stockenv-20191005210355-deployment/amplify-cfn-templates/auth/stockapp67252536-cloudformation-template.yml",
+				"TemplateURL": "https://s3.amazonaws.com/stock-app-stockapp-20191009023655-deployment/amplify-cfn-templates/auth/stockapp8a33ee07-cloudformation-template.yml",
 				"Parameters": {
-					"identityPoolName": "stockapp67252536_identitypool_67252536",
+					"identityPoolName": "stockapp8a33ee07_identitypool_8a33ee07",
 					"allowUnauthenticatedIdentities": false,
-					"resourceNameTruncated": "stocka67252536",
-					"userPoolName": "stockapp67252536_userpool_67252536",
+					"resourceNameTruncated": "stocka8a33ee07",
+					"userPoolName": "stockapp8a33ee07_userpool_8a33ee07",
 					"autoVerifiedAttributes": "email",
 					"mfaConfiguration": "OFF",
 					"mfaTypes": "SMS Text Message",
@@ -92,9 +92,9 @@
 					"userpoolClientRefreshTokenValidity": 30,
 					"userpoolClientWriteAttributes": "email",
 					"userpoolClientReadAttributes": "email",
-					"userpoolClientLambdaRole": "stocka67252536_userpoolclient_lambda_role",
+					"userpoolClientLambdaRole": "stocka8a33ee07_userpoolclient_lambda_role",
 					"userpoolClientSetAttributes": false,
-					"resourceName": "stockapp67252536",
+					"resourceName": "stockapp8a33ee07",
 					"authSelections": "identityPoolAndUserPool",
 					"authRoleArn": {
 						"Fn::GetAtt": [
@@ -109,34 +109,29 @@
 						]
 					},
 					"useDefault": "default",
-					"triggers": "{}",
-					"parentStack": {
-						"Ref": "AWS::StackId"
-					},
-					"permissions": "",
 					"dependsOn": "",
-					"env": "stockenv"
+					"env": "stockapp"
 				}
 			}
 		},
-		"apistockApp": {
+		"apistockapp": {
 			"Type": "AWS::CloudFormation::Stack",
 			"Properties": {
-				"TemplateURL": "https://s3.amazonaws.com/stock-app-stockenv-20191005210355-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+				"TemplateURL": "https://s3.amazonaws.com/stock-app-stockapp-20191009023655-deployment/amplify-cfn-templates/api/cloudformation-template.json",
 				"Parameters": {
 					"CreateAPIKey": 0,
-					"AppSyncApiName": "stockApp",
+					"AppSyncApiName": "stockapp",
 					"DynamoDBBillingMode": "PAY_PER_REQUEST",
 					"DynamoDBEnableServerSideEncryption": "false",
 					"AuthCognitoUserPoolId": {
 						"Fn::GetAtt": [
-							"authstockapp67252536",
+							"authstockapp8a33ee07",
 							"Outputs.UserPoolId"
 						]
 					},
-					"S3DeploymentBucket": "stock-app-stockenv-20191005210355-deployment",
-					"S3DeploymentRootKey": "amplify-appsync-files/80b2b40e4325b070f3193d4284e3639e3d2f66b2",
-					"env": "stockenv"
+					"S3DeploymentBucket": "stock-app-stockapp-20191009023655-deployment",
+					"S3DeploymentRootKey": "amplify-appsync-files/4cbca88ae3b19a1ea038cc54173af74184fc65be",
+					"env": "stockapp"
 				}
 			}
 		},
@@ -144,7 +139,7 @@
 			"DependsOn": [
 				"AuthRole",
 				"UnauthRole",
-				"authstockapp67252536"
+				"authstockapp8a33ee07"
 			],
 			"Type": "AWS::Lambda::Function",
 			"Properties": {
@@ -228,7 +223,7 @@
 				},
 				"idpId": {
 					"Fn::GetAtt": [
-						"authstockapp67252536",
+						"authstockapp8a33ee07",
 						"Outputs.IdentityPoolId"
 					]
 				},

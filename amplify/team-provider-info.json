@@ -1,18 +1,18 @@
 {
-    "stockenv": {
+    "stockapp": {
         "awscloudformation": {
-            "AuthRoleName": "stock-app-stockenv-20191005210355-authRole",
-            "UnauthRoleArn": "arn:aws:iam::387212297643:role/stock-app-stockenv-20191005210355-unauthRole",
-            "AuthRoleArn": "arn:aws:iam::387212297643:role/stock-app-stockenv-20191005210355-authRole",
-            "Region": "us-east-2",
-            "DeploymentBucketName": "stock-app-stockenv-20191005210355-deployment",
-            "UnauthRoleName": "stock-app-stockenv-20191005210355-unauthRole",
-            "StackName": "stock-app-stockenv-20191005210355",
-            "StackId": "arn:aws:cloudformation:us-east-2:387212297643:stack/stock-app-stockenv-20191005210355/2b95aaf0-e7d5-11e9-9c20-0279c28b0d70"
+            "AuthRoleName": "stock-app-stockapp-20191009023655-authRole",
+            "UnauthRoleArn": "arn:aws:iam::387212297643:role/stock-app-stockapp-20191009023655-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::387212297643:role/stock-app-stockapp-20191009023655-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "stock-app-stockapp-20191009023655-deployment",
+            "UnauthRoleName": "stock-app-stockapp-20191009023655-unauthRole",
+            "StackName": "stock-app-stockapp-20191009023655",
+            "StackId": "arn:aws:cloudformation:us-east-1:387212297643:stack/stock-app-stockapp-20191009023655/30184380-ea5f-11e9-adeb-0a1726208052"
         },
         "categories": {
             "auth": {
-                "stockapp67252536": {}
+                "stockapp8a33ee07": {}
             }
         }
     }

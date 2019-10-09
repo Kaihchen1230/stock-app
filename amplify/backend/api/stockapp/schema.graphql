@@ -1,28 +1,28 @@
 type User @model {
-	id: ID!
-	username: String
-	email: String
-	balance: Float
-	stocks: [Stock] @connection(name:"purchasedStocks")
-	stockTransaction: [Transaction] @connection(name:"transaction")
+ id: ID!
+ username: String
+ email: String
+ balance: Float
+ stocks: [Stock] @connection(name:"purchasedStocks")
+ stockTransaction: [Transaction] @connection(name:"transaction")
 }
 
 type Stock @model{
-	id: ID!
-	owner: User @connection(name:"purchasedStocks")
-	shareAmount: Int
-	symbol: String
-	purchasedPrice: Float
-	dayOpen: Float
-	dayHigh: Float
-	dayLow: Float
-	dayClose: Float
+ id: ID!
+ owner: User @connection(name:"purchasedStocks")
+ shareAmount: Int
+ symbol: String
+ purchasedPrice: Float
+ dayOpen: Float
+ dayHigh: Float
+ dayLow: Float
+ dayClose: Float
 }
 
 type Transaction @model{
-	id: ID!
-	owner: User @connection(name:"transaction")
-	shareAmount: Int
-	stockSymbol: String
-	cost: Float
+ id: ID!
+ owner: User @connection(name:"transaction")
+ shareAmount: Int
+ stockSymbol: String
+ cost: Float
 }

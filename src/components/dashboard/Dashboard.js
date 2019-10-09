@@ -33,7 +33,7 @@ class Dashboard extends React.Component{
         super(props);
         
         this.state = {
-            API_KEY: process.env.REACT_APP_STOCK_API_KEY,
+            API_KEY: process.env.REACT_APP_STOCK_API_KEY ? process.env.REACT_APP_STOCK_API_KEY : "1QOILP133JYJHLS7",
             currentUser: {},
             tickerSymbol: '',
             share: 0,
