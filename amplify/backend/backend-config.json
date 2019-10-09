@@ -1,13 +1,13 @@
 {
 	"auth": {
-		"stockapp67252536": {
+		"stockapp8a33ee07": {
 			"service": "Cognito",
 			"providerPlugin": "awscloudformation",
 			"dependsOn": []
 		}
 	},
 	"api": {
-		"stockApp": {
+		"stockapp": {
 			"service": "AppSync",
 			"providerPlugin": "awscloudformation",
 			"output": {
@@ -16,7 +16,7 @@
 					"defaultAuthentication": {
 						"authenticationType": "AMAZON_COGNITO_USER_POOLS",
 						"userPoolConfig": {
-							"userPoolId": "authstockapp67252536"
+							"userPoolId": "authstockapp8a33ee07"
 						}
 					}
 				}
