@@ -1,5 +1,6 @@
 import React from 'react';
 import {Modal, Button} from '@material-ui/core';
+import { lineHeight } from '@material-ui/system';
 
 const popOut = (props) => {
 
@@ -24,7 +25,9 @@ const popOut = (props) => {
                     padding: "10px"
                 }}>
                 <h2>{props.message}</h2>
-                <Button variant="contained" color="primary" onClick={props.close}>Ok</Button>
+                <Button variant="contained" color="primary" onClick={props.close} style={{
+                    marginTop: "50px"
+                }}>Ok</Button>
             </div>
           </div>
         </Modal>

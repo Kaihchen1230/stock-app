@@ -23,11 +23,11 @@ const App = () => {
           justifyContent: "flex-end"
         }}>
           <Button>
-          <a href="/">Dashboard</a>
+          <Link to="/">Dashboard</Link>
           </Button>
           
           <Button style={{marginRight: "20px"}}>
-          <a href="/transaction">Transaction</a>
+          <Link to="/transaction">Transaction</Link>
           </Button>
           
         </Grid>
