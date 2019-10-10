@@ -1,0 +1,11 @@
+{
+    "AppSyncApiName": "stockAPP",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "DynamoDBEnableServerSideEncryption": "false",
+    "AuthCognitoUserPoolId": {
+        "Fn::GetAtt": [
+            "authstockapp59cd8d9e",
+            "Outputs.UserPoolId"
+        ]
+    }
+}
