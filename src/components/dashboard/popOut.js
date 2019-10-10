@@ -14,8 +14,7 @@ const popOut = (props) => {
         >
             <div style={{
                 position: "relative",
-                width: "30vw",
-                height: "30vh",
+                width: "40vw",
                 margin: "0 auto",
                 top: "25%",
                 backgroundColor: "rgba(255,255,255)",
@@ -26,7 +25,7 @@ const popOut = (props) => {
                 }}>
                 <h2>{props.message}</h2>
                 <Button variant="contained" color="primary" onClick={props.close} style={{
-                    marginTop: "50px"
+                    marginTop: "30px"
                 }}>Ok</Button>
             </div>
           </div>

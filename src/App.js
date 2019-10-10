@@ -3,10 +3,9 @@ import './App.css';
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
 import Amplify from 'aws-amplify';
 import aws_exports from './aws-exports';
-import { withAuthenticator } from 'aws-amplify-react';
 import Dashboard from './components/dashboard/Dashboard';
 import Transaction from './components/Transaction';
-import {Divider, Grid, Button} from '@material-ui/core';
+import {Grid, Button} from '@material-ui/core';
 
 Amplify.configure(aws_exports);
 
@@ -42,4 +41,5 @@ const App = () => {
 
 }
 
-export default withAuthenticator(App, {includeGreetings: true });
+// export default withAuthenticator(App, {includeGreetings: true });
+export default App;
