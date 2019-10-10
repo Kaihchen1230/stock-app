@@ -1,7 +1,7 @@
 import React from 'react';
 import {Table, TableBody, TableCell, TableHead, TableRow, Paper} from '@material-ui/core';
 import * as queries from '../graphql/queries';
-import Amplify, {Auth, API, graphqlOperation } from 'aws-amplify';
+import {Auth, API, graphqlOperation } from 'aws-amplify';
 
 
 class Transaction extends React.Component {

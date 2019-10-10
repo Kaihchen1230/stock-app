@@ -1,12 +1,12 @@
 import React from 'react';
 import * as mutations from '../../graphql/mutations'
 import * as queries from '../../graphql/queries';
-import Amplify, {Auth, API, graphqlOperation } from 'aws-amplify';
+import {Auth, API, graphqlOperation } from 'aws-amplify';
 import axios from 'axios';
 import DisplayStock from './displayStock';
 import PopOut from './popOut';
 import { withStyles } from '@material-ui/core/styles';
-import {TextField, Grid, Button, Divider} from '@material-ui/core';
+import {TextField, Grid, Button} from '@material-ui/core';
 
 
 const dashBoardStyle = () => ({
@@ -173,10 +173,10 @@ class Dashboard extends React.Component{
         const currentHour = today.getHours();
         const currentMin = today.getMinutes();
         console.log('this is curentData: ', currentDate)
-        if(currentHour < 9 || (currentHour === 9 && currentMin < 35) || currentWeekDay === 0 || currentWeekDay === 6){
+        if(currentHour < 9 || (currentHour === 9 && currentMin < 35) || currentWeekDay === 0 || currentWeekDay === 6 || currentHour > 16){
             // alert('the stock market is not opened yet!! Will be using last week firday data');
             this.setState({
-                message: 'The Stock Market Is Not Opened Yet!! Come Back Later!',
+                message: 'The Stock Market Is Not Opened Yet!! Come Back Next Business Day at 9:35AM.',
                 display: true
             })
             return;
