@@ -15,7 +15,6 @@ const popOut = (props) => {
             <div style={{
                 position: "relative",
                 width: "40vw",
-                height: "40vh",
                 margin: "0 auto",
                 top: "25%",
                 backgroundColor: "rgba(255,255,255)",
