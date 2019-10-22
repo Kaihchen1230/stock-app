@@ -101,7 +101,7 @@ class Dashboard extends React.Component{
     }
 
     componentDidMount = async () => {
-        // console.log('this is api: ', this.state.API_KEY)
+        console.log('this is state in did mount: ', this.state)
         Auth.currentAuthenticatedUser()
         .then(user => {
             this.setState({
@@ -126,6 +126,7 @@ class Dashboard extends React.Component{
     async componentDidUpdate() {
 
         try{
+            
             const {data} = await API.graphql(graphqlOperation(queries.getUser, {id: this.state.userId}));
             // console.log('this is data in did update: ', data);
             this.setState({
@@ -191,19 +192,24 @@ class Dashboard extends React.Component{
         if(this.state.balance >= cost){
             const remain = this.state.balance - cost
             const userId = this.state.currentUser.attributes.sub;
-            // console.log('this is userid in buy stock: ', userId)
+            console.log('this is userid in buy stock: ', userId)
             const ownedStocks = this.state.ownedStocks;
             
             const currentStockId = userId + this.state.tickerSymbol.toUpperCase();
-            // console.log('this is ownedStocks: ', ownedStocks)
-            ownedStocks.forEach(async (item, ind) => {
+            console.log('this is ownedStocks: ', ownedStocks)
+            console.log('this is currentStockId: ', currentStockId)
+            ownedStocks.map((item, ind) => {
+                console.log('this is item: ', item)
+
                 if(item.id.toUpperCase() === currentStockId.toUpperCase()){
+                    console.log('here, ', item)
                     this.setState({
                         stockId: currentStockId,
                         totalShare: this.state.share + item.shareAmount
                     })
                 }
             })
+            console.log('this is state in buy ticket after update stockid: ', this.state)
             if(this.state.stockId){
                 try{
                     const updateStockInput = {
@@ -212,9 +218,10 @@ class Dashboard extends React.Component{
                         dayOpen: open,
                         dayHigh: high,
                         dayLow: low,
-                        dayClose: close
+                        dayClose: close,
+                        
                     }
-
+                    console.log('this is updateStockinput: ', updateStockInput)
                     const {data} = await API.graphql(graphqlOperation(mutations.updateStock, {input: updateStockInput}))
                 }catch(error){
                     console.log('there is an error to update the stock: ', error)
@@ -262,7 +269,8 @@ class Dashboard extends React.Component{
 
             this.setState({
                 balance: remain,
-                stockId: currentStockId
+                stockId: ''
+
             })
 
         }else{
