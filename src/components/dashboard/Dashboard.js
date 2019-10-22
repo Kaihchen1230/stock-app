@@ -102,7 +102,7 @@ class Dashboard extends React.Component{
     }
 
     componentDidMount = async () => {
-        
+        console.log('this is api: ', this.state.API_KEY)
         Auth.currentAuthenticatedUser()
         .then(user => {
             this.setState({
@@ -167,7 +167,8 @@ class Dashboard extends React.Component{
         const today = new Date();
         const currentYear = today.getFullYear();
         const currentMonth = today.getMonth() + 1
-        const currentDay = (today.getDate() < 10 ? '0' + today.getDate() : today.getDate)
+        const currentDay = (today.getDate() < 10 ? '0' + today.getDate() : today.getDate())
+        console.log('this is currentDay: ', currentDay)
         const currentWeekDay = today.getDay();
         let currentDate = currentYear + '-' + currentMonth + '-' + currentDay;
         const currentHour = today.getHours();
