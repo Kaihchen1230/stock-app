@@ -102,7 +102,7 @@ class Dashboard extends React.Component{
     }
 
     componentDidMount = async () => {
-        
+        console.log('this is api: ', this.state.API_KEY)
         Auth.currentAuthenticatedUser()
         .then(user => {
             this.setState({
@@ -167,7 +167,8 @@ class Dashboard extends React.Component{
         const today = new Date();
         const currentYear = today.getFullYear();
         const currentMonth = today.getMonth() + 1
-        const currentDay = (today.getDate() < 10 ? '0' + today.getDate() : today.getDate)
+        const currentDay = (today.getDate() < 10 ? '0' + today.getDate() : today.getDate())
+        console.log('this is currentDay: ', currentDay)
         const currentWeekDay = today.getDay();
         let currentDate = currentYear + '-' + currentMonth + '-' + currentDay;
         const currentHour = today.getHours();
@@ -310,6 +311,15 @@ class Dashboard extends React.Component{
                     {/* to display the data */}
                     <Grid item xs={12} sm={9} className={classes.Grid}>
                         <h2>Portfolio: ${this.state.portfolio.toFixed(2)}</h2>
+                            
+                            <div>
+                                <ul style={{display: "flex", justifyContent: "space-around"}}>
+                                  <li><p style={{color:"#F67672"}}>Stock Value is less than today's open price</p></li>  
+                                  <li><p style={{color: "#686464"}}>Stock Value is equal to today's open price</p></li>  
+                                  <li><p style={{color: "#3EB96F"}}>Stock Value is greater than today's open price</p></li>  
+                                </ul>    
+                            </div>
+                        
                         <DisplayStock stocks={this.state.ownedStocks}/>
                     </Grid>
                     {/* form to ask user to purchase the stock */}
