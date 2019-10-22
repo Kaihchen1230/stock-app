@@ -54,7 +54,7 @@ class Dashboard extends React.Component{
 
     createUser = async () => {
         try{
-            console.log('this is the user in the state: ', this.state.currentUser)
+            // console.log('this is the user in the state: ', this.state.currentUser)
             const { email, sub } = this.state.currentUser.attributes;
             const payload = {
                 id: sub,
@@ -62,18 +62,17 @@ class Dashboard extends React.Component{
                 username: this.state.currentUser.username,
                 balance: 5000
             }
-            console.log('this is payload: ', payload)
+            // console.log('this is payload: ', payload)
             const { data } = await API.graphql(graphqlOperation(mutations.createUser, {input: payload}));
-            console.log('this is data in createUser: ', data);
+            // console.log('this is data in createUser: ', data);
             this.setState({
                 userData: data,
-                userId: data.getUser.id,
+                userId: data.createUser.id,
                 balance: 5000
-            }, () => {
-                console.log('this is state in createUser: ', this.state)
             })
 
         }catch(error){
+            // console.log('this is the state: ', this.state)
             console.log('there is an error to create the user: ', error)
         }
     }
@@ -82,9 +81,9 @@ class Dashboard extends React.Component{
         
         try{
             const id = this.state.currentUser.attributes.sub;
-            console.log('this is id: ', id);
+            // console.log('this is id: ', id);
             const { data } = await API.graphql(graphqlOperation(queries.getUser, {id: id}));
-            console.log('this is data from checkUserExisted: ', data);
+            // console.log('this is data from checkUserExisted: ', data);
             // user not existed, so create user into the user table
             if(!data.getUser){
                 this.createUser();
@@ -102,16 +101,13 @@ class Dashboard extends React.Component{
     }
 
     componentDidMount = async () => {
-        console.log('this is api: ', this.state.API_KEY)
+        // console.log('this is api: ', this.state.API_KEY)
         Auth.currentAuthenticatedUser()
         .then(user => {
             this.setState({
                 currentUser: user
-            }, () => {
-                // console.log('this is user: ', user, 'and this is currenUser: ', this.state.currentUser)
-            })
-        }).then(async () => {  
-            this.checkUserExisted();
+            });
+            this.checkUserExisted()
         })
     }
 
@@ -168,12 +164,13 @@ class Dashboard extends React.Component{
         const currentYear = today.getFullYear();
         const currentMonth = today.getMonth() + 1
         const currentDay = (today.getDate() < 10 ? '0' + today.getDate() : today.getDate())
-        console.log('this is currentDay: ', currentDay)
+        // console.log('this is currentDay: ', currentDay)
         const currentWeekDay = today.getDay();
         let currentDate = currentYear + '-' + currentMonth + '-' + currentDay;
         const currentHour = today.getHours();
         const currentMin = today.getMinutes();
-        console.log('this is curentData: ', currentDate)
+        // console.log('this is current hour: ', currentHour)
+        // console.log('this is curentData: ', currentDate)
         if(currentHour < 9 || (currentHour === 9 && currentMin < 35) || currentWeekDay === 0 || currentWeekDay === 6 || currentHour > 16){
             // alert('the stock market is not opened yet!! Will be using last week firday data');
             this.setState({
@@ -183,6 +180,7 @@ class Dashboard extends React.Component{
             return;
         }
         const todayStockData = this.state.stockInfo['Time Series (Daily)'][currentDate];
+        // console.log('this is todaysotckData: ', todayStockData)
         const open = parseFloat(todayStockData['1. open']);
         const high = parseFloat(todayStockData['2. high']);
         const low = parseFloat(todayStockData['3. low']);
@@ -192,11 +190,11 @@ class Dashboard extends React.Component{
         if(this.state.balance >= cost){
             const remain = this.state.balance - cost
             const userId = this.state.currentUser.attributes.sub;
-
+            // console.log('this is userid in buy stock: ', userId)
             const ownedStocks = this.state.ownedStocks;
             
             const currentStockId = userId + this.state.tickerSymbol.toUpperCase();
-
+            // console.log('this is ownedStocks: ', ownedStocks)
             ownedStocks.forEach(async (item, ind) => {
                 if(item.id.toUpperCase() === currentStockId.toUpperCase()){
                     this.setState({
@@ -237,10 +235,12 @@ class Dashboard extends React.Component{
                     
                     }
                     const {data} = await API.graphql(graphqlOperation(mutations.createStock, {input: createStockInput}));
+
                 }catch(error){
                     console.log('there is an error to create the stock data: ', error)
                 }
             }
+
             
             const transactionInput = {
                 shareAmount: this.state.share,
@@ -260,7 +260,8 @@ class Dashboard extends React.Component{
             const updatedUserData = await API.graphql(graphqlOperation(mutations.updateUser, {input: updateUserInput}));
 
             this.setState({
-                balance: remain
+                balance: remain,
+                stockId: currentStockId
             })
 
         }else{
