@@ -172,8 +172,7 @@ class Dashboard extends React.Component{
         const currentMin = today.getMinutes();
         // console.log('this is current hour: ', currentHour)
         // console.log('this is curentData: ', currentDate)
-        if(currentHour < 9 || (currentHour === 9 && currentMin < 35) || currentWeekDay === 0 || currentWeekDay === 6){ 
-        // || currentHour > 16){
+        if(currentHour < 9 || (currentHour === 9 && currentMin < 35) || currentWeekDay === 0 || currentWeekDay === 6 || currentHour > 16){
             // alert('the stock market is not opened yet!! Will be using last week firday data');
             this.setState({
                 message: 'The Stock Market Is Not Opened Yet!! Come Back Next Business Day at 9:35AM.',
